@@ -140,7 +140,7 @@
         .then((userCredential) => {
           // Signed in
           const user = userCredential.user;
-          window.location.href = 'home.html';
+          window.location.href = 'https://intermission-blue.vercel.app/';
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -160,7 +160,7 @@
           const token = credential.accessToken;
           // The signed-in user info.
           const user = result.user;
-          window.location.href = 'home.html';
+          window.location.href = 'https://intermission-blue.vercel.app/';
         }).catch((error) => {
           // Handle Errors here.
           const errorCode = error.code;
