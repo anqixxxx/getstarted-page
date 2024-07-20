@@ -107,7 +107,7 @@
           <input type="password" id="password" name="password" required><br><br>
           <button type="submit" class="btn">Login</button>
         </form>
-        <button type="button" id="googleLoginButton" class="btn btn-default btn-block">Log In with Google</button>
+        // <button type="button" id="googleLoginButton" class="btn btn-default btn-block">Log In with Google</button>
       </div>
     </div>
   </div>
@@ -155,20 +155,20 @@
     });
 
     // Google login button event listener
-    const googleLoginButton = document.getElementById('googleLoginButton');
-    googleLoginButton.addEventListener('click', () => {
-      const provider = new GoogleAuthProvider();
-      signInWithPopup(auth, provider)
-        .then((result) => {
+    //const googleLoginButton = document.getElementById('googleLoginButton');
+    //googleLoginButton.addEventListener('click', () => {
+      //const provider = new GoogleAuthProvider();
+      //signInWithPopup(auth, provider)
+        //.then((result) => {
           // The signed-in user info.
-          window.location.href = 'https://intermission-blue.vercel.app/';
-        })
-        .catch((error) => {
-          const errorMessage = error.message;
-          document.getElementById('loginError').style.display = 'block';
-          document.getElementById('loginError').textContent = errorMessage;
-        });
-    });
+          //window.location.href = 'https://intermission-blue.vercel.app/';
+        //})
+        //.catch((error) => {
+          //const errorMessage = error.message;
+          //document.getElementById('loginError').style.display = 'block';
+          //document.getElementById('loginError').textContent = errorMessage;
+        //});
+    //});
   </script>
 </body>
 </html>
