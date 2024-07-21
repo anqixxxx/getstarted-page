@@ -107,13 +107,13 @@
           <input type="password" id="password" name="password" required><br><br>
           <button type="submit" class="btn">Login</button>
         </form>
-        
+        <button type="button" id="googleLoginButton" class="btn btn-default btn-block">Log In with Google</button>
       </div>
     </div>
   </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -131,27 +131,29 @@
     const auth = getAuth(app);
 
     // Set auth persistence to LOCAL
-    setPersistence(auth, browserLocalPersistence).catch((error) => {
-      console.error(error);
-    });
+    setPersistence(auth, browserSessionPersistence).then(() => {
+        // Login form event listener
+        const loginForm = document.getElementById('loginForm');
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = loginForm.email.value;
+            const password = loginForm.password.value;
 
-    // Login form event listener
-    const loginForm = document.getElementById('loginForm');
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const email = loginForm.email.value;
-      const password = loginForm.password.value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Signed in
-          window.location.href = 'https://intermission-blue.vercel.app/';
+            signInWithEmailAndPassword(auth, email, password)
+              .then((userCredential) => {
+                // Signed in
+                window.location.href = 'https://intermission-blue.vercel.app/';
+              })
+              .catch((error) => {
+                const errorMessage = error.message;
+                document.getElementById('loginError').style.display = 'block';
+                document.getElementById('loginError').textContent = errorMessage;
+              });
+            });
         })
         .catch((error) => {
-          const errorMessage = error.message;
-          document.getElementById('loginError').style.display = 'block';
-          document.getElementById('loginError').textContent = errorMessage;
-        });
+            console.error(error);
+      // Handle errors
     });
   </script>
 </body>
