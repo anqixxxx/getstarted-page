@@ -113,7 +113,7 @@
   </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -154,6 +154,13 @@
         .catch((error) => {
             console.error(error);
       // Handle errors
+    });
+
+    // Check auth state on page load
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = 'https://intermission-blue.vercel.app/';
+      }
     });
   </script>
 </body>
