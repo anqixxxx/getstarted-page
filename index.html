@@ -87,6 +87,12 @@
       color: red;
       margin-bottom: 15px;
     }
+    #welcomeMessage {
+      display: none;
+      text-align: center;
+      font-size: 1.2em;
+      color: #003366;
+    }
   </style>
 </head>
 <body>
@@ -97,6 +103,9 @@
       <p>Your Health Companion</p>
     </div>
     <div class="content">
+      <div id="welcomeMessage">
+        <p>Welcome back, <span id="userEmail"></span>!</p>
+      </div>
       <div class="form-container">
         <h2>Login to PulsePals</h2>
         <div id="loginError" class="alert alert-danger" style="display:none;"></div>
@@ -112,7 +121,7 @@
   </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -154,7 +163,12 @@
         // Check auth state on page load
         onAuthStateChanged(auth, (user) => {
           if (user) {
-            window.location.href = 'https://intermission-blue.vercel.app/';
+            document.getElementById('welcomeMessage').style.display = 'block';
+            document.getElementById('userEmail').textContent = user.email;
+            // Redirect to intermission page
+            setTimeout(() => {
+              window.location.href = 'https://intermission-blue.vercel.app/';
+            }, 2000); // Optional delay to allow message display
           }
         });
       })
