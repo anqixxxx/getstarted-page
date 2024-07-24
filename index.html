@@ -112,7 +112,7 @@
   </div>
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, setPersistence, browserSessionPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, signInWithPopup, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // Your web app's Firebase configuration
     const firebaseConfig = {
@@ -130,7 +130,7 @@
     const auth = getAuth(app);
 
     // Set auth persistence to LOCAL
-    setPersistence(auth, browserSessionPersistence).then(() => {
+    setPersistence(auth, browserLocalPersistence).then(() => {
         // Login form event listener
         const loginForm = document.getElementById('loginForm');
         loginForm.addEventListener('submit', (e) => {
