@@ -163,8 +163,8 @@
   const provider = new firebase.auth.GoogleAuthProvider();
 
   // Login form event listener
-  const loginForm = document.getElementById('loginForm');
-  loginForm.addEventListener('submit', (e) => {
+  const emailInput = document.getElementById('email');
+  emailInput.addEventListener('focus', (e) => {
     e.preventDefault();
 
     auth.signInWithPopup(provider)
