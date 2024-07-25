@@ -172,12 +172,14 @@
     if (user) {
       document.getElementById('welcomeMessage').style.display = 'block';
       document.getElementById('userEmail').textContent = user.email;
-      // Redirect to intermission page
-      setTimeout(() => {
-        window.location.href = 'https://intermission-blue.vercel.app/';
-      }, 2000); // Optional delay to allow message display
+      auth.signOut().then(() => {
+        console.log('User signed out');
+      }).catch((error) => {
+        console.error('Error signing out: ', error);
+      });
     }
   });
+
 </script>
 </body>
 </html>
