@@ -87,6 +87,14 @@
       color: red;
       margin-bottom: 15px;
     }
+
+    #welcomeMessage {
+      display: none;
+      text-align: center;
+      font-size: 1.2em;
+      color: #003366;
+    }
+
   </style>
 </head>
 <body>
@@ -97,6 +105,9 @@
       <p>Your Health Companion</p>
     </div>
     <div class="content">
+      <div id="welcomeMessage">
+        <p>Welcome back, <span id="userEmail"></span>!</p>
+      </div>
       <div class="form-container">
         <h2>Login to PulsePals</h2>
         <div id="loginError" class="alert alert-danger" style="display:none;"></div>
@@ -159,11 +170,12 @@
   // Check auth state on page load
   auth.onAuthStateChanged((user) => {
     if (user) {
-      // User is signed in, perform other actions here
-      console.log('User is signed in');
-    } else {
-      // User is signed out, perform other actions here
-      console.log('User is signed out');
+      document.getElementById('welcomeMessage').style.display = 'block';
+      document.getElementById('userEmail').textContent = user.email;
+      // Redirect to intermission page
+      setTimeout(() => {
+        window.location.href = 'https://intermission-blue.vercel.app/';
+      }, 2000); // Optional delay to allow message display
     }
   });
 </script>
