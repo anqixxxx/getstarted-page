@@ -87,12 +87,6 @@
       color: red;
       margin-bottom: 15px;
     }
-    #welcomeMessage {
-      display: none;
-      text-align: center;
-      font-size: 1.2em;
-      color: #003366;
-    }
   </style>
 </head>
 <body>
@@ -103,9 +97,6 @@
       <p>Your Health Companion</p>
     </div>
     <div class="content">
-      <div id="welcomeMessage">
-        <p>Welcome back, <span id="userEmail"></span>!</p>
-      </div>
       <div class="form-container">
         <h2>Login to PulsePals</h2>
         <div id="loginError" class="alert alert-danger" style="display:none;"></div>
@@ -119,64 +110,62 @@
       </div>
     </div>
   </div>
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    // Your web app's Firebase configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyAo6ziHFthGBRE3cZd8EC-Ukds8ztyMzFQ",
-      authDomain: "pulsepals-c211c.firebaseapp.com",
-      projectId: "pulsepals-c211c",
-      storageBucket: "pulsepals-c211c.appspot.com",
-      messagingSenderId: "475129408953",
-      appId: "1:475129408953:web:1913c2d4083c1452079a68",
-      measurementId: "G-YPSX5VFFG5"
-    };
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAo6ziHFthGBRE3cZd8EC-Ukds8ztyMzFQ",
+    authDomain: "pulsepals-c211c.firebaseapp.com",
+    projectId: "pulsepals-c211c",
+    storageBucket: "pulsepals-c211c.appspot.com",
+    messagingSenderId: "475129408953",
+    appId: "1:475129408953:web:1913c2d4083c1452079a68",
+    measurementId: "G-YPSX5VFFG5"
+  };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-    // Set auth persistence to LOCAL
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        // Login form event listener
-        const loginForm = document.getElementById('loginForm');
-        loginForm.addEventListener('submit', (e) => {
-          e.preventDefault();
-          const email = loginForm.email.value;
-          const password = loginForm.password.value;
+  // Set auth persistence to LOCAL
+  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    .then(() => {
+      // Login form event listener
+      const loginForm = document.getElementById('loginForm');
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
 
-          signInWithEmailAndPassword(auth, email, password)
-            .then((userCredential) => {
-              // Signed in
-              window.location.href = 'https://intermission-blue.vercel.app/';
-            })
-            .catch((error) => {
-              const errorMessage = error.message;
-              document.getElementById('loginError').style.display = 'block';
-              document.getElementById('loginError').textContent = errorMessage;
-            });
-        });
-
-        // Check auth state on page load
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            document.getElementById('welcomeMessage').style.display = 'block';
-            document.getElementById('userEmail').textContent = user.email;
-            // Redirect to intermission page
-            setTimeout(() => {
-              window.location.href = 'https://intermission-blue.vercel.app/';
-            }, 2000); // Optional delay to allow message display
-          } else {
-              document.getElementById('loginPage').style.display = 'block';
-          }
-        });
-      })
-      .catch((error) => {
-        console.error('Error setting persistence:', error);
+        auth.signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            // Signed in
+            window.location.href = 'https://intermission-blue.vercel.app/';
+          })
+          .catch((error) => {
+            const errorMessage = error.message;
+            document.getElementById('loginError').style.display = 'block';
+            document.getElementById('loginError').textContent = errorMessage;
+          });
       });
-  </script>
+    })
+    .catch((error) => {
+      console.error(error);
+      // Handle errors
+    });
+
+  // Check auth state on page load
+  auth.onAuthStateChanged((user) => {
+    if (user) {
+      // User is signed in, perform other actions here
+      console.log('User is signed in');
+    } else {
+      // User is signed out, perform other actions here
+      console.log('User is signed out');
+    }
+  });
+</script>
 </body>
 </html>
