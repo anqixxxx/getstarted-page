@@ -141,7 +141,7 @@
     const auth = firebase.auth();
 
     // Set auth persistence to LOCAL
-    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
+    auth.setPersistence(firebase.auth.Auth.Persistence.SESSION)
       .then(() => {
         console.log("Auth persistence set to LOCAL");
 
