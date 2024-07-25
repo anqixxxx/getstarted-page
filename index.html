@@ -155,8 +155,10 @@
           auth.signInWithEmailAndPassword(email, password)
             .then((userCredential) => {
               console.log("User signed in:", userCredential.user.email);
-              window.location.href = 'https://intermission-blue.vercel.app/';
-            })
+              setTimeout(() => {
+                window.location.href = 'https://intermission-blue.vercel.app/';
+                }, 500); // Delay to ensure auth state is properly set
+              })
             .catch((error) => {
               const errorMessage = error.message;
               document.getElementById('loginError').style.display = 'block';
