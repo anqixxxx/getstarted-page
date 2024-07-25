@@ -151,11 +151,6 @@
     if (user) {
       document.getElementById('welcomeMessage').style.display = 'block';
       document.getElementById('userEmail').textContent = user.email;
-      auth.signOut().then(() => {
-        console.log('User signed out');
-      }).catch((error) => {
-        console.error('Error signing out: ', error);
-      });
     }
   });
 
@@ -169,20 +164,16 @@
 
     auth.signInWithPopup(provider)
       .then((result) => {
-
-        const token = result.credential.accessToken;
-        // The signed-in user info.
         const user = result.user;
         console.log("User signed in:", user.email);
         window.location.href = 'https://intermission-blue.vercel.app/';
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorMessage = error.message;
         document.getElementById('loginError').style.display = 'block';
         document.getElementById('loginError').textContent = errorMessage;
       });
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
