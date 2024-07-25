@@ -163,13 +163,13 @@
   const provider = new firebase.auth.GoogleAuthProvider();
 
   // Login form event listener
-  const emailInput = document.getElementById('email');
-  emailInput.addEventListener('focus', (e) => {
+  const loginButton = document.querySelector('#loginForm button');
+  loginButton.addEventListener('click', (e) => {
     e.preventDefault();
 
     auth.signInWithPopup(provider)
       .then((result) => {
-        // This gives you a Google Access Token. You can use it to access Google APIs.
+
         const token = result.credential.accessToken;
         // The signed-in user info.
         const user = result.user;
