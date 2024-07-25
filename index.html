@@ -94,7 +94,6 @@
       font-size: 1.2em;
       color: #003366;
     }
-
   </style>
 </head>
 <body>
@@ -146,43 +145,28 @@
       console.error(error);
     });
 
-  // Check auth state on page load
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById('welcomeMessage').style.display = 'block';
-      document.getElementById('userEmail').textContent = user.email;
-      auth.signOut().then(() => {
-        console.log('User signed out');
-      }).catch((error) => {
-        console.error('Error signing out: ', error);
-      });
-    }
-  });
-
-  // Create a Google provider instance
-  const provider = new firebase.auth.GoogleAuthProvider();
-
   // Login form event listener
-  const emailInput = document.getElementById('email');
-  emailInput.addEventListener('focus', (e) => {
+  document.getElementById('loginForm').addEventListener('submit', (e) => {
     e.preventDefault();
 
-    auth.signInWithPopup(provider)
-      .then((result) => {
-        // This gives you a Google Access Token. You can use it to access Google APIs.
-        const token = result.credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-        console.log("User signed in:", user.email);
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    auth.signInWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        return userCredential.user.getIdToken();  // Get Firebase Auth Token
+      })
+      .then((token) => {
+        localStorage.setItem('authToken', token);  // Store Token
         window.location.href = 'https://intermission-blue.vercel.app/';
       })
       .catch((error) => {
-        // Handle Errors here.
         const errorMessage = error.message;
         document.getElementById('loginError').style.display = 'block';
         document.getElementById('loginError').textContent = errorMessage;
       });
-    });
-  </script>
+  });
+</script>
 </body>
 </html>
+
