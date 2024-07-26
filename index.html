@@ -116,7 +116,7 @@
           <input type="email" id="email" name="email" required><br><br>
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" required><br><br>
-          <button type="submit" class="btn">Login</button>
+          <button type="submit" class="btn" id = 'googleLogin'>Login</button>
         </form>
       </div>
     </div>
@@ -140,12 +140,6 @@
   firebase.initializeApp(firebaseConfig);
   const auth = firebase.auth();
 
-  // Set auth persistence to LOCAL
-  auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
-    .catch((error) => {
-      console.error(error);
-    });
-
   // Check auth state on page load
   auth.onAuthStateChanged((user) => {
     if (user) {
@@ -156,24 +150,28 @@
 
   // Create a Google provider instance
   const provider = new firebase.auth.GoogleAuthProvider();
+  const googleLoginButton = document.getElementById('googleLogin');
 
   // Login form event listener
-  const loginButton = document.querySelector('#loginForm button');
-  loginButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
+  googleLoginButton.addEventListener('click', (event) => {
+    event.preventDefault();
+    
     auth.signInWithPopup(provider)
-      .then((result) => {
+      .then(async (result) => {
         const user = result.user;
-        console.log("User signed in:", user.email);
-        window.location.href = 'https://intermission-blue.vercel.app/';
+        const idToken = await user.getIdToken(true);
+        const userId = user.uid;
+
+        // Store the token and user ID in sessionStorage
+        sessionStorage.setItem('idToken', idToken);
+        sessionStorage.setItem('userId', userId);
+
+        window.location.href = `https://intermission-blue.vercel.app/`;
       })
       .catch((error) => {
-        const errorMessage = error.message;
-        document.getElementById('loginError').style.display = 'block';
-        document.getElementById('loginError').textContent = errorMessage;
+        console.error('Error signing in:', error);
       });
-  });
-</script>
+    });
+  </script>
 </body>
 </html>
