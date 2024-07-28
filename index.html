@@ -105,9 +105,6 @@
       <p>Your Health Companion</p>
     </div>
     <div class="content">
-      <div id="welcomeMessage">
-        <p>Welcome back, <span id="userEmail"></span>!</p>
-      </div>
       <div class="form-container">
         <h2>Login to PulsePals</h2>
         <div id="loginError" class="alert alert-danger" style="display:none;"></div>
@@ -116,15 +113,16 @@
           <input type="email" id="email" name="email" required><br><br>
           <label for="password">Password:</label>
           <input type="password" id="password" name="password" required><br><br>
-          <button type="submit" class="btn" id = 'googleLogin'>Login</button>
+          <button type="submit" class="btn">Login</button>
         </form>
       </div>
     </div>
   </div>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-<script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, setPersistence, browserLocalPersistence, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
   // Your web app's Firebase configuration
   const firebaseConfig = {
     apiKey: "AIzaSyAo6ziHFthGBRE3cZd8EC-Ukds8ztyMzFQ",
@@ -136,41 +134,27 @@
     measurementId: "G-YPSX5VFFG5"
   };
 
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // Check auth state on page load
-  auth.onAuthStateChanged((user) => {
-    if (user) {
-      document.getElementById('welcomeMessage').style.display = 'block';
-      document.getElementById('userEmail').textContent = user.email;
-    }
-  });
-
-  // Create a Google provider instance
-  const provider = new firebase.auth.GoogleAuthProvider();
-  const googleLoginButton = document.getElementById('googleLogin');
-
-  // Login form event listener
-  googleLoginButton.addEventListener('click', (event) => {
-    event.preventDefault();
-    
-    auth.signInWithPopup(provider)
-      .then(async (result) => {
-        const user = result.user;
-        const idToken = await user.getIdToken(true);
-        const userId = user.uid;
-
-        // Store the token and user ID in sessionStorage
-        sessionStorage.setItem('idToken', idToken);
-        sessionStorage.setItem('userId', userId);
-
-        window.location.href = `https://intermission-blue.vercel.app/`;
-      })
-      .catch((error) => {
-        console.error('Error signing in:', error);
-      });
+    const loginForm = document.getElementById('loginForm');
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = loginForm.email.value;
+      const password = loginForm.password.value;
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          window.location.href = 'https://intermission-blue.vercel.app/';
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          document.getElementById('loginError').style.display = 'block';
+          document.getElementById('loginError').textContent = errorMessage;
+        });
     });
   </script>
 </body>
