@@ -107,7 +107,7 @@
     <div class="content">
       <div class="form-container">
         <h2>Login to PulsePals</h2>
-        <div id="loginError" class="alert alert-danger" style="display:none;"></div>
+        <div id="loginError" class="alert alert-danger" style="display:none;">Invalid email or password</div>
         <form id="loginForm">
           <label for="email">Email:</label>
           <input type="email" id="email" name="email" required><br><br>
@@ -121,18 +121,18 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup} from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-  // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyAo6ziHFthGBRE3cZd8EC-Ukds8ztyMzFQ",
-    authDomain: "pulsepals-c211c.firebaseapp.com",
-    projectId: "pulsepals-c211c",
-    storageBucket: "pulsepals-c211c.appspot.com",
-    messagingSenderId: "475129408953",
-    appId: "1:475129408953:web:1913c2d4083c1452079a68",
-    measurementId: "G-YPSX5VFFG5"
-  };
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyAo6ziHFthGBRE3cZd8EC-Ukds8ztyMzFQ",
+      authDomain: "pulsepals-c211c.firebaseapp.com",
+      projectId: "pulsepals-c211c",
+      storageBucket: "pulsepals-c211c.appspot.com",
+      messagingSenderId: "475129408953",
+      appId: "1:475129408953:web:1913c2d4083c1452079a68",
+      measurementId: "G-YPSX5VFFG5"
+    };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -153,8 +153,6 @@
             window.location.href = 'https://intermission-blue.vercel.app/';
           })
           .catch((error) => {
-            var errorMessage = error.message;
-            document.getElementById('loginError').innerText = errorMessage;
             document.getElementById('loginError').style.display = 'block';
           });
       });
